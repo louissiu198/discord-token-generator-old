@@ -8,8 +8,7 @@ from json import dumps
 class Proccess:
     def __init__(self):
         self.captchaKey = None
-        self.userAgent = get("https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome").text
-        self.userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + self.userAgent.split("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/")[1].split(".0.0.0 Safari/537.36")[0] + ".0.0.0 Safari/537.36"
+        self.userAgent = Utils.getUseragent()
         self.headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Encoding": "gzip, deflate, br",
@@ -29,8 +28,8 @@ class Proccess:
 
     def getSession(self):
         self.requestsClient = Session(
-            client_identifier="chrome114",
-            random_tls_extension_order=True
+            client_identifier = f"chrome{self.userAgent.split('Chrome/')[1].split('.0.0.0')[0]}",
+            random_tls_extension_order = True
         )
 
     def getCookies(self):
@@ -102,6 +101,8 @@ class Proccess:
             print(f"(-) Exception   {resp.text}")
     
     def getFlagged(self):
+        pass
+
 
 
 
