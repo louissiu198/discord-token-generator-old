@@ -7,8 +7,6 @@ class MotionData:
     def __init__(self, userAgent):
         self.firstMotion = None
         self.secondMotion = None
-        self.thirdMotion = None
-        self.calledTimes = 0
         self.userAgent = userAgent
         self.widgetId = "".join([random.choice("01234567890qwertyuiopasdfghjklzxcvbnm") for i in range(12)])
 
@@ -54,14 +52,15 @@ class MotionData:
             "prev":{"escaped":False,"passed":False,"expiredChallenge":False,"expiredResponse":False}
         }
         return self.firstMotion
-        
-    def O2(self, eKey):
-        # Second GetCaptcha Req [Only 1 Changes] | Session - from the empty list to append eKey from first req and widgetId
-        self.firstMotion["session"] = [[eKey, self.widgetId]]
-        return self.firstMotion
+    
+    # Reget captcha not needed - payload changed 
+    # def O2(self, eKey):
+    #     # Second Re-GetCaptcha Req [Only 1 Changes] | Session - from the empty list to append eKey from first req and widgetId
+    #     self.firstMotion["session"] = [[eKey, self.widgetId]]
+    #     return self.firstMotion
   
-    def O3(self):
-        # Third CheckCaptcha Req [Only 2 Changes] | KD/KUMP - ku is random number with deciml from 500-700, while kd doesn't changes but timestamp needed to be update
+    def O2(self):
+        # Second CheckCaptcha Req [Only 2 Changes] | KD/KUMP - ku is random number with deciml from 500-700, while kd doesn't changes but timestamp needed to be update
         timestamp = round(time.time() * 1000)
         self.secondMotion = {
             "st":timestamp,
