@@ -1,6 +1,8 @@
 import httpx
 from urllib.parse import urlencode
 
+# Not contiuned xtekky ... if u can spoof its okay la it wasnt needed lol
+# because its vichy's cloudfare reverse is in golang and i cant understand about the fingerprint and aes 256 so whatever
 class Cloudfare:
     def __init__(self, session, website):
         self.version = "19b997cb"
