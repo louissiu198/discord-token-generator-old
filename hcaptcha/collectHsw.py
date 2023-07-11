@@ -14,7 +14,7 @@ class FunctionHsw:
         self.options.add_argument("--disable-blink-features=AutomationControlled")
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        self.script = get("")
+        self.script = # change the hsw here from helper.py get("https://newassets.hcaptcha.com/c/44fa09c/hsw.js")
         self.driver = webdriver.Chrome(options=self.options)
         self.prePared()
 
@@ -27,3 +27,7 @@ class FunctionHsw:
     def closeConnection(self):
         self.driver.delete_all_cookies()
         self.driver.quit()
+
+if __name__ == "__main__":
+    client = FunctionHsw([1920,1080], "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+    input()
