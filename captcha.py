@@ -83,7 +83,7 @@ class Captcha:
                 return {"text": "no"}
             else:
                 answer = ""
-                for chunk in Completion.create(question + " strictly respond yes or no", None):
+                for chunk in Solver.create(question + " strictly respond yes or no", None):
                     answer = (answer + chunk).lower()
                 if answer.startswith("yes"):
                     with open("./hcaptcha/text.txt", "a") as f:
@@ -107,12 +107,12 @@ class Captcha:
                 "c": dumps(dumps(base[0]["c"])), # escape json
                 "n": self.collEcter.getToken(base[0]["c"]["req"]), 
                 "job_mode": "text_free_entry",
-                "motionData": dumps(dumps(self.motionData.O3())), # escape json
+                "motionData": dumps(dumps(self.motionData.O2())), # escape json
                 "serverdomain": "discord.com"
             }
 
             self.headers["Accept"] = "*/*"
-            self.headers["Cookie"] = f"hmt_id={base[1]};"
+            self.headers["Cookie"] = f"hmt_id={base[1]};" # needed cookie
             self.headers["Content-Type"] = "application/json;charset=UTF-8"
             self.headers["Content-Length"] = str(len(payload))
 
@@ -137,22 +137,8 @@ if __name__  == "__main__":
         random_tls_extension_order=True
     )
     sexxion = Captcha(client, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-    print(sexxion.getCaptcha())
+    print(sexxion.getConfig())
 
-
-        # except Exception as e:
-        #     # print(e)
-        #     return False
-        
-# if __name__ == "__main__":
-#     # while True:
-#     #     startTime = time.time()
-#     #     result = Hcaptcha(siteUrl="https://discord.com/register", siteKey="4c672d35-0701-42b2-88c3-78380b0db560", session=requests.Session()).createTask()
-#     #     print(result)
-#     #     endTime = time.time() - startTime
-#     #     print(round(endTime))
-#     resp = requests.get("https://www.google.com/search?q=" + "term").text
-#     print(resp)
 
 
 
