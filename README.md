@@ -1,4 +1,16 @@
 # Discord Token Generator (Private, Continued, Not finished)
+### Usage
+```
+If you are not dumb I think you can understand
+Files
+generator = proccess.py
+solver = captcha.py
+utils = helper.py
+email = verfiy.py
+Folders
+hcaptcha = store images, text
+cloudfare = researchs
+```
 ### Quality
 ```
 + Hcaptcha Solver (APIKEY not needed, our own ai unflagged solver)
