@@ -1,6 +1,10 @@
 import json
 from httpx import get
 from random import randint, choice
+from hashlib import md5
+from fake_useragent import UserAgent
+import string
+import time
 
 # class Wrapper:
 #     def __init__(self, session):
@@ -13,7 +17,9 @@ from random import randint, choice
 #         pass
 #     def getProfile():
 #         pass
-
+informations = {
+    "hswScript": "44fa09c"
+}
 class Utils:
     @staticmethod
     def getUsername():
@@ -33,50 +39,58 @@ class Utils:
     def getBirthday():
         month = ["01","02","03","04","05","06","07","08","09","10","11","12"]
         return f"{randint(1990,2006)}-{choice(month)}-{randint(10,28)}"
-
-# class Setup:
-#     def __init__(self, session, token):
-#         self.session = session
-#         self.token = token
-#         self.headers = {"authorization":self.token,"user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"}
-
-#     def getFlags(self):
-#         checkList = [1000,2000,3000,4000,5000,6000,7000,8000,9000,1111,2222,3333,4444,5555,6666,7777,8888,9999,1122,2233,3344,4455,5566,6677,7788,8899,9900,1234,2345,3456,4567,5678,6789,7890]
-#         response = self.session.get(
-#             url = "https://discord.com/api/v9/users/@me",
-#             headers = self.headers
-#         )
-#         print(response.text)
-#         if response.status_code != 200:
-#             status = "locked"
-#         elif response.json()["flags"] == 0 or response.json()["public_flags"] == 0:
-#             status = "unlocked"
-#         elif response.json()["flags"] == 1048576 or response.json()["public_flags"] == 1048576:
-#             status = "flagged"
-#         elif response.json()["flags"] == 2199023255552 or response.json()["public_flags"] == 2199023255552:
-#             status = "disabled"
-
-#         if status in ["locked","disabled"]:
-#             return status
-#         else:
-#             if response.json()["discriminator"] in checkList:
-#                 return status + ":|"
-#             else:
-#                 return status
     
-#     def getFriend(self):
-#         self.headers["content-type"] = "application/json"
-#         self.headers["x-context-properties"] = "eyJsb2NhdGlvbiI6IkFkZCBGcmllbmQifQ=="
-#         response = self.session.post(
-#             url = "https://discord.com/api/v9/users/@me/relationships",
-#             headers = self.headers,
-#             json = {
-#                 "username": "louissiu",
-#                 "discriminator": 1998
-#             }
-#         )
-#         print(response.text)
-#         if response.status_code == 204:
-#             return True
-#         else:
-#             return False
+    @staticmethod
+    def getUseragent():
+        resp = get("https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome").text
+        return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + resp.split("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/")[1].split(".0.0.0 Safari/537.36")[0] + ".0.0.0 Safari/537.36"
+
+    @staticmethod
+    def getCaptchaV():
+        resp = get("https://hcaptcha.com/1/api.js").text
+        s = resp.find("https://newassets.hcaptcha.com/captcha/") + 42
+        f = resp[s:].find("/") + s
+        return resp[s:f]
+
+    @staticmethod
+    def getCaptchaH():
+        response = get(
+            url = f"https://newassets.hcaptcha.com/c/{informations['hswScript']}/hsw.js"
+        )
+        return response.text
+    
+#  I didn't made this part, this is from xtekky's github G4F, gpt4free, thanks for the contribution ...
+class Solver:
+    @classmethod
+    def md5(self, text):
+        return md5(text.encode()).hexdigest()[::-1]
+
+    @classmethod
+    def get_api_key(self, user_agent):
+        part1 = str(randint(0, 10**11))
+        part2 = self.md5(user_agent+self.md5(user_agent+self.md5(user_agent+part1+"x")))
+        return f"tryit-{part1}-{part2}"
+
+    @classmethod
+    def create(self, session, messages):
+        user_agent = UserAgent().random
+        api_key = self.get_api_key(user_agent)
+        headers = {
+          "api-key": api_key,
+          "user-agent": user_agent
+        }
+        files = {
+          "chat_style": (None, "chat"),
+          "chatHistory": (None, json.dumps(messages))
+        }
+
+        response = session.post("https://api.deepai.org/chat_response", headers=headers, files=files, stream=True)
+
+        for chunk in response.iter_content(chunk_size=None):
+            response.raise_for_status()
+            yield chunk.decode()
+
+class Completion:
+    @classmethod
+    def create(self, prompt, session):
+        return ChatCompletion.create(session,[{"role": "user", "content": prompt}])
