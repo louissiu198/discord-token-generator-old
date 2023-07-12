@@ -1,4 +1,19 @@
 # Discord Token Generator (Private, Continued, Not finished)
+### Todo
+```
++ Better motiondata spoof - captcha/motionData.py
++ Reverse hsw.js - captcha/collectHsw.py
++ Add proxy support - proccess.py
++ Cloudfare reverse - cloudfare/signature.py
++ ChatGPT usage - helper.py
+```
+### Notes
+```
+Json         : escape json = 2 dumps
+Tls-Client   : prevent cloudfare errors = delete all content-length
+Captcha      : new cookie = hmt_id
+Discord      : new payload = unique_username_registration
+```
 ### Usage
 ```
 If you are not dumb I think you can understand
