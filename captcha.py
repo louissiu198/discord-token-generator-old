@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from helper import Utils, Solver
 from random import randint, choice
 from json import dumps, loads
-from time import time
+from time import time, sleep
 import json
 import os
 
@@ -25,7 +25,6 @@ class Captcha:
             "Accept": "application/json",
             "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "en-GB,en;q=0.9",
-            "Content-Length": "0",
             "Content-Type": "text/plain",
             "Dnt": "1",
             "Origin": "https://newassets.hcaptcha.com",
@@ -60,14 +59,12 @@ class Captcha:
             "n": self.collEcter.getToken(c["req"]),
             "c": dumps(c)
         }
-        
         self.headers["Content-Type"] = "application/x-www-form-urlencoded"
-        self.headers["Content-Length"] = str(len(urlencode(payload)))
 
         resp = self.session.post(
             url = "https://hcaptcha.com/getcaptcha/4c672d35-0701-42b2-88c3-78380b0db560",
             headers = self.headers,
-            data = self.basePayload
+            data = payload
         )
         if resp.status_code == 200:
             return resp.json(), resp.cookies["hmt_id"]
@@ -83,7 +80,8 @@ class Captcha:
                 return {"text": "no"}
             else:
                 answer = ""
-                for chunk in Solver.create(question + " strictly respond yes or no", None):
+                # Solver.create(session,[{"role": "user", "content": question}])
+                for chunk in Solver.create(self.session, [{"role": "user", "content": question + " strictly respond yes or no"}]):
                     answer = (answer + chunk).lower()
                 if answer.startswith("yes"):
                     with open("./hcaptcha/text.txt", "a") as f:
@@ -98,6 +96,7 @@ class Captcha:
     def checkCaptcha(self):
         base = self.getCaptcha(self.getConfig())
         if base[0] != None:
+            # print(base[0])
             answerList = {}
             for tasks in base[0]["tasklist"]:
                 answerList[tasks["task_key"]] = self.solveCaptcha(tasks["datapoint_text"]["en"])
@@ -114,13 +113,13 @@ class Captcha:
             self.headers["Accept"] = "*/*"
             self.headers["Cookie"] = f"hmt_id={base[1]};" # needed cookie
             self.headers["Content-Type"] = "application/json;charset=UTF-8"
-            self.headers["Content-Length"] = str(len(payload))
 
             resp = self.session.post(
                 url = f"https://hcaptcha.com/checkcaptcha/4c672d35-0701-42b2-88c3-78380b0db560/{base[0]['key']}",
                 headers = self.headers,
                 json = payload
             )
+            print(resp.text)
             if "pass" in resp.json():
                 rest = loads(resp.text)
                 if rest["pass"] == True:
@@ -137,8 +136,7 @@ if __name__  == "__main__":
         random_tls_extension_order=True
     )
     sexxion = Captcha(client, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-    print(sexxion.getConfig())
-
+    sexxion.checkCaptcha()
 
 
 
