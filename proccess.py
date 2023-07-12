@@ -83,7 +83,6 @@ class Proccess:
         self.headers["Origin"] = "https://discord.com"
         self.headers["Cookie"] = self.headers["Cookie"] + "; locale=en-GB"
         self.headers["Content-Type"] = "application/json"
-        self.headers["Content-Length"] = str(len(payload))
         self.headers["X-Fingerprint"] = self.fingerprint
 
         resp = self.requestsClient.post(
