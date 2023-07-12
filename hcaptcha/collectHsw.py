@@ -14,7 +14,7 @@ class FunctionHsw:
         self.options.add_argument("--disable-blink-features=AutomationControlled")
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        self.script = # change the hsw here from helper.py get("https://newassets.hcaptcha.com/c/44fa09c/hsw.js")
+        self.script = # change the hsw here from helper.py get("https://newassets.hcaptcha.com/c/44fa09c/hsw.js").text
         self.driver = webdriver.Chrome(options=self.options)
         self.prePared()
 
