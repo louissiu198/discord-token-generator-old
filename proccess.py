@@ -76,6 +76,7 @@ class Proccess:
             "date_of_birth": Utils.getBirthday(),
             "gift_code_sku_id": None,
             "promotional_email_opt_in": False,
+            "unique_username_registration": False
         }
 
         del self.headers["X-Context-Properties"]
