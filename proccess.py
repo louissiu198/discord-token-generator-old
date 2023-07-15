@@ -7,7 +7,6 @@ from json import dumps
 
 class Proccess:
     def __init__(self):
-        self.captchaKey = None
         self.userAgent = Utils.getUseragent()
         self.headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -65,40 +64,70 @@ class Proccess:
         ).json()["fingerprint"]
     
     def getRegister(self):
-        payload = {
-            "email": None,
-            "invite": None,
-            "consent": True,
-            "username": Utils.getUsername(),
-            "password": Utils.getPassword(),
-            "fingerprint": self.fingerprint,
-            "captcha_key": self.captchaKey,
-            "date_of_birth": Utils.getBirthday(),
-            "gift_code_sku_id": None,
-            "promotional_email_opt_in": False,
-            "unique_username_registration": False
-        }
+        while True:
+            self.headers = {   
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Accept-Language": "en-GB,en;q=0.9",
+                "Dnt": "1",
+                "Sec-Ch-Ua": "\"Not.A\/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\"",
+                "Sec-Ch-Ua-Mobile": "?0",
+                "Sec-Ch-Ua-Platform": "Windows",
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "none",
+                "Sec-Fetch-User": "?1",
+                "Upgrade-Insecure-Requests": "1",
+                "User-Agent": self.userAgent
+            }
 
-        del self.headers["X-Context-Properties"]
-        self.headers["Origin"] = "https://discord.com"
-        self.headers["Cookie"] = self.headers["Cookie"] + "; locale=en-GB"
-        self.headers["Content-Type"] = "application/json"
-        self.headers["X-Fingerprint"] = self.fingerprint
+            self.captchaKey = None
+            if self.captchaKey == None:
+                break
 
-        resp = self.requestsClient.post(
-            url = "https://discord.com/api/v9/register",
-            headers = self.headers,
-            json = payload
-        )
-        if resp.status_code == 201:
-            self.token = resp.json()["token"]
-            print(f"(+) Generated   {self.token}")
-        elif "retry_after" in resp.json():
-            print(f"(!) RateLimit    {round(resp['retry_after'])}")
-        elif "captcha_key" in resp.json() or "captcha_service" in resp.json():
-            print(f"(-) Detected    {resp.json()['captcha_key']}")
-        else:
-            print(f"(-) Exception   {resp.text}")
+            self.getSession()
+            self.getCookies()
+            self.getFingerprint()
+            
+            payload = {
+                "email": None,
+                "invite": None,
+                "consent": True,
+                "username": Utils.getUsername(),
+                "password": Utils.getPassword(),
+                "fingerprint": self.fingerprint,
+                "captcha_key": self.captchaKey,
+                "date_of_birth": Utils.getBirthday(),
+                "gift_code_sku_id": None,
+                "promotional_email_opt_in": False,
+                "unique_username_registration": False
+            }
+
+            del self.headers["X-Context-Properties"]
+            self.headers["Origin"] = "https://discord.com"
+            self.headers["Cookie"] = self.headers["Cookie"] + "; locale=en-GB"
+            self.headers["Content-Type"] = "application/json"
+            self.headers["X-Fingerprint"] = self.fingerprint
+
+            try:
+                resp = self.requestsClient.post(
+                    url = "https://discord.com/api/v9/register",
+                    headers = self.headers,
+                    json = payload
+                )
+            except Exception as e:
+                print(e)
+                break
+            
+            if resp.status_code == 201:
+                self.token = resp.json()["token"]
+                print(f"(+) Generated   {self.token}")
+            elif "retry_after" in resp.json():
+                print(f"(!) RateLimit    {round(resp['retry_after'])}")
+            elif "captcha_key" in resp.json() or "captcha_service" in resp.json():
+                print(f"(-) Detected    {resp.json()['captcha_key']}")
+            else:
+                print(f"(-) Exception   {resp.text}")
     
     def getFlagged(self):
         pass
