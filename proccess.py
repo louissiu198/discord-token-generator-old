@@ -5,6 +5,11 @@ from helper import Utils
 from httpx import get
 from json import dumps
 
+unlocked = 0
+disabled = 0
+flagged = 0
+locked = 0
+
 class Proccess:
     def __init__(self):
         self.userAgent = Utils.getUseragent()
