@@ -58,6 +58,11 @@ class Utils:
             url = f"https://newassets.hcaptcha.com/c/{informations['hswScript']}/hsw.js"
         )
         return response.text
+
+    @staticmethod
+    def getHeaders(option = None):
+        if option == None:
+            return 
     
 #  I didn't made this part, this is from xtekky's github G4F, gpt4free, thanks for the contribution ...
 class Solver:
