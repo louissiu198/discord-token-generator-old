@@ -10,6 +10,10 @@ disabled = 0
 flagged = 0
 locked = 0
 
+unverfied = True
+uncreated = True
+joinserver = True
+
 class Proccess:
     def __init__(self):
         self.userAgent = Utils.getUseragent()
