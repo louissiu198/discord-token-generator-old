@@ -60,7 +60,7 @@ class Utils:
         return response.text
 
     @staticmethod
-    def getHeaders(option = None):
+    def getHeaders(userAgent):
         base = {   
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Encoding": "gzip, deflate, br",
@@ -74,11 +74,10 @@ class Utils:
             "Sec-Fetch-Site": "none",
             "Sec-Fetch-User": "?1",
             "Upgrade-Insecure-Requests": "1",
-            "User-Agent": self.userAgent
+            "User-Agent": userAgent
         }
-        if option == None:
-            return base
-        if option == 1:    
+        return base
+        
 #  I didn't made this part, this is from xtekky's github G4F, gpt4free, thanks for the contribution ...
 class Solver:
     @classmethod
