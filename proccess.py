@@ -14,15 +14,11 @@ unverfied = True
 uncreated = True
 joinserver = True
 
+inviteKey = ""
+
 class Proccess:
     def __init__(self):
         self.userAgent = Utils.getUseragent()
-
-    def getSession(self):
-        self.requestsClient = Session(
-            client_identifier = f"chrome{self.userAgent.split('Chrome/')[1].split('.0.0.0')[0]}",
-            random_tls_extension_order = True
-        )
 
     def getCookies(self):
         resp = self.requestsClient.get(
@@ -45,11 +41,18 @@ class Proccess:
         self.headers["Sec-Fetch-Mode"] = "cors"
         self.headers["Sec-Fetch-Site"] = "same-origin"
         # Adding new discord x-headers
-        self.headers["X-Context-Properties"] = "eyJsb2NhdGlvbiI6IlJlZ2lzdGVyIn0="
-        self.headers["X-Debug-Options"] = "bugReporterEnabled"
-        self.headers["X-Discord-Locale"] = "en-GB"
-        self.headers["X-Discord-Timezone"] = "Asia/Hong_Kong"
-        self.headers["X-Super-Properties"] = "eyJvcyI6Ik1hYyBPUyBYIiwiYnJvd3NlciI6IkNocm9tZSIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJlbi1HQiIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChNYWNpbnRvc2g7IEludGVsIE1hYyBPUyBYIDEwXzE1XzcpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMTQuMC4wLjAgU2FmYXJpLzUzNy4zNiIsImJyb3dzZXJfdmVyc2lvbiI6IjExNC4wLjAuMCIsIm9zX3ZlcnNpb24iOiIxMC4xNS43IiwicmVmZXJyZXIiOiIiLCJyZWZlcnJpbmdfZG9tYWluIjoiIiwicmVmZXJyZXJfY3VycmVudCI6IiIsInJlZmVycmluZ19kb21haW5fY3VycmVudCI6IiIsInJlbGVhc2VfY2hhbm5lbCI6InN0YWJsZSIsImNsaWVudF9idWlsZF9udW1iZXIiOjIxMDkwMSwiY2xpZW50X2V2ZW50X3NvdXJjZSI6bnVsbH0="
+        if unverfied:
+            self.headers["X-Context-Properties"] = "eyJsb2NhdGlvbiI6IlJlZ2lzdGVyIn0="
+            self.headers["X-Debug-Options"] = "bugReporterEnabled"
+            self.headers["X-Discord-Locale"] = "en-GB"
+            self.headers["X-Discord-Timezone"] = "Asia/Hong_Kong"
+            self.headers["X-Super-Properties"] = "eyJvcyI6Ik1hYyBPUyBYIiwiYnJvd3NlciI6IkNocm9tZSIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJlbi1HQiIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChNYWNpbnRvc2g7IEludGVsIE1hYyBPUyBYIDEwXzE1XzcpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMTQuMC4wLjAgU2FmYXJpLzUzNy4zNiIsImJyb3dzZXJfdmVyc2lvbiI6IjExNC4wLjAuMCIsIm9zX3ZlcnNpb24iOiIxMC4xNS43IiwicmVmZXJyZXIiOiIiLCJyZWZlcnJpbmdfZG9tYWluIjoiIiwicmVmZXJyZXJfY3VycmVudCI6IiIsInJlZmVycmluZ19kb21haW5fY3VycmVudCI6IiIsInJlbGVhc2VfY2hhbm5lbCI6InN0YWJsZSIsImNsaWVudF9idWlsZF9udW1iZXIiOjIxMDkwMSwiY2xpZW50X2V2ZW50X3NvdXJjZSI6bnVsbH0="
+            experiments = "https://discord.com/api/v9/experiments?with_guild_experiments=true"
+        elif uncreated:
+            self.headers["X-Track"] = "eyJvcyI6Ik1hYyBPUyBYIiwiYnJvd3NlciI6IkNocm9tZSIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJlbi1HQiIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChNYWNpbnRvc2g7IEludGVsIE1hYyBPUyBYIDEwXzE1XzcpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMTQuMC4wLjAgU2FmYXJpLzUzNy4zNiIsImJyb3dzZXJfdmVyc2lvbiI6IjExNC4wLjAuMCIsIm9zX3ZlcnNpb24iOiIxMC4xNS43IiwicmVmZXJyZXIiOiIiLCJyZWZlcnJpbmdfZG9tYWluIjoiIiwicmVmZXJyZXJfY3VycmVudCI6IiIsInJlZmVycmluZ19kb21haW5fY3VycmVudCI6IiIsInJlbGVhc2VfY2hhbm5lbCI6InN0YWJsZSIsImNsaWVudF9idWlsZF9udW1iZXIiOjk5OTksImNsaWVudF9ldmVudF9zb3VyY2UiOm51bGx9"
+            experiments = "https://discord.com/api/v9/experiments"
+        elif joinserver:
+            pass
         
         self.fingerprint = self.requestsClient.get(
             url = "https://discord.com/api/v9/experiments?with_guild_experiments=true",
@@ -59,28 +62,38 @@ class Proccess:
     def getRegister(self):
         while True:
             self.headers = Utils.getHeaders(self.userAgent)
+            self.requestsClient = Session(
+                client_identifier = f"chrome{self.userAgent.split('Chrome/')[1].split('.0.0.0')[0]}",
+                random_tls_extension_order = True
+            )
             self.captchaKey = None
             if self.captchaKey == None:
                 break
-            self.getSession()
+            
             self.getCookies()
             self.getFingerprint()
             
             payload = {
-                "email": None,
-                "invite": None,
-                "consent": True,
-                "username": Utils.getUsername(),
-                "password": Utils.getPassword(),
-                "fingerprint": self.fingerprint,
+                "consent":True,
+                "fingerprint":self.fingerprint,
+                "username":Utils.getUsername(),
                 "captcha_key": self.captchaKey,
-                "date_of_birth": Utils.getBirthday(),
-                "gift_code_sku_id": None,
-                "promotional_email_opt_in": False,
-                "unique_username_registration": False
             }
-
-            del self.headers["X-Context-Properties"]
+            if unverfied:
+                payload = payload | {
+                    "email": None,
+                    "invite": None,
+                    "password": Utils.getPassword(),
+                    "date_of_birth": Utils.getBirthday(),
+                    "gift_code_sku_id": None,
+                    "promotional_email_opt_in": False,
+                    "unique_username_registration": False
+                }
+                del self.headers["X-Context-Properties"]
+            if joinserver:
+                payload = payload | {
+                    "invite": inviteKey
+                }
             self.headers["Origin"] = "https://discord.com"
             self.headers["Cookie"] = self.headers["Cookie"] + "; locale=en-GB"
             self.headers["Content-Type"] = "application/json"
@@ -98,21 +111,19 @@ class Proccess:
 
             if resp.status_code == 201:
                 self.token = resp.json()["token"]
-                print(f"(+) Generated   {self.token}")
+                print(f"(*) Generated   {self.token}")
             elif "retry_after" in resp.json():
-                print(f"(!) RateLimit    {round(resp['retry_after'])}")
+                print(f"(^) RateLimit    {round(resp['retry_after'])}")
             elif "captcha_key" in resp.json() or "captcha_service" in resp.json():
-                print(f"(-) Detected    {resp.json()['captcha_key']}")
+                print(f"(&) Detected    {resp.json()['captcha_key']}")
             else:
                 print(f"(-) Exception   {resp.text}")
     
     def getFlagged(self):
         pass
 
-
-
-
-        
+if __name__ == "__main__":
+    pass
 
 
 
