@@ -112,4 +112,4 @@ class Solver:
 class Completion:
     @classmethod
     def create(self, prompt, session):
-        return ChatCompletion.create(session,[{"role": "user", "content": prompt}])
+        return Solver.create(session,[{"role": "user", "content": prompt}])
