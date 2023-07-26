@@ -3,7 +3,7 @@ from selenium import webdriver
 from httpx import get
 
 class FunctionHsw:
-    def __init__(self, whList, userAgent):
+    def __init__(self, whList, userAgent, opTion, inVite = None):
         self.options = Options()
         self.options.add_argument("--headless") 
         self.options.add_argument("--incognito")
@@ -14,15 +14,20 @@ class FunctionHsw:
         self.options.add_argument("--disable-blink-features=AutomationControlled")
         self.options.add_experimental_option("useAutomationExtension", False)
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        self.script = # change the hsw here from helper.py get("https://newassets.hcaptcha.com/c/44fa09c/hsw.js").text
+        self.script = get("https://newassets.hcaptcha.com/c/c2b994f/hsw.js").text
         self.driver = webdriver.Chrome(options=self.options)
-        self.prePared()
+        self.prePared(opTion, inVite)
 
-    def prePared(self):
-        self.driver.get("https://discord.com/register")
+    def prePared(self, choice, invite):
+        if choice == 1:
+            self.driver.get("https://discord.com/register")
+        elif choice == 2:
+            self.driver.get("https://discord.com/register")
+        elif choice == 3:
+            self.driver.get("https://discord.com/invite/" + invite)
     
     def getToken(self, req):
-        return self.driver.execute_script(f"{self.script}; return hsw('{req}')")
+        return self.driver.execute_script(f'{self.script}; return hsw("{req}")')
 
     def closeConnection(self):
         self.driver.delete_all_cookies()
