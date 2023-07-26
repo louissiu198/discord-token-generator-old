@@ -1,10 +1,10 @@
-import json
-from httpx import get
+from fake_useragent import UserAgent
+from requests import get, post
 from random import randint, choice
 from hashlib import md5
-from fake_useragent import UserAgent
 import string
 import time
+import json
 
 # class Wrapper:
 #     def __init__(self, session):
@@ -91,7 +91,7 @@ class Solver:
         return f"tryit-{part1}-{part2}"
 
     @classmethod
-    def create(self, session, messages):
+    def create(self, messages):
         user_agent = UserAgent().random
         api_key = self.get_api_key(user_agent)
         headers = {
@@ -103,7 +103,7 @@ class Solver:
           "chatHistory": (None, json.dumps(messages))
         }
 
-        response = session.post("https://api.deepai.org/chat_response", headers=headers, files=files, stream=True)
+        response = post("https://api.deepai.org/chat_response", headers=headers, files=files, stream=True)
 
         for chunk in response.iter_content(chunk_size=None):
             response.raise_for_status()
@@ -111,5 +111,5 @@ class Solver:
 
 class Completion:
     @classmethod
-    def create(self, prompt, session):
-        return Solver.create(session,[{"role": "user", "content": prompt}])
+    def create(self, prompt):
+        return Solver.create([{"role": "user", "content": prompt}])
