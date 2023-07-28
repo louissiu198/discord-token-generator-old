@@ -23,10 +23,10 @@ class MotionData:
         timestamp = round(time() * 1000)
         self.firstMotion = {
             "st":timestamp,
-            "ku":[[9,timestamp + randint(999,1200)]],
-            "ku-mp":0,
-            "kd":[[13,timestamp + randint(1999,2200)]],
-            "kd-mp":0,
+            # "ku":[[9,timestamp + randint(999,1200)]],
+            # "ku-mp":0,
+            # "kd":[[13,timestamp + randint(1999,2200)]],
+            # "kd-mp":0,
             "v":1,
             "topLevel":{
                 "st":timestamp + randint(2999,3200),
@@ -40,10 +40,10 @@ class MotionData:
                 "dr":"",
                 "inv":False,
                 "exec":False,
-                "wn":[[1680,854,2,timestamp + randint(3999,4200)]],
-                "wn-mp":0,
-                "xy":[[0,0,1,timestamp + randint(4999,5200)]],
-                "xy-mp":0,
+            #     "wn":[[1680,854,2,timestamp + randint(3999,4200)]],
+            #     "wn-mp":0,
+            #     "xy":[[0,0,1,timestamp + randint(4999,5200)]],
+            #     "xy-mp":0,
             },
             "session":[],
             "widgetList":[self.widgetId],
@@ -67,10 +67,10 @@ class MotionData:
         self.secondMotion = {
             "st":timestamp,
             "dct":timestamp,
-            "kd":MotionData.formatTime(du, timestamp + randint(100,200)),
-            "kd-mp":mp,
-            "ku":MotionData.formatTime(du, timestamp + randint(200,400)),
-            "ku-mp":mp + randint(10,100),
+            # "kd":MotionData.formatTime(du, timestamp + randint(100,200)),
+            # "kd-mp":mp,
+            # "ku":MotionData.formatTime(du, timestamp + randint(200,400)),
+            # "ku-mp":mp + randint(10,100),
             "topLevel":{
                 "st":timestamp + randint(2999,3200),
                 "sc":{
