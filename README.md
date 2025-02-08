@@ -7,24 +7,12 @@
 + Cloudfare reverse - cloudfare/signature.py
 + ChatGPT usage - helper.py
 ```
-### Notes
+### Update
 ```
 Json         : escape json = 2 dumps
 Tls-Client   : prevent cloudfare errors = delete all content-length
 Captcha      : new cookie = hmt_id
 Discord      : new payload = unique_username_registration
-```
-### Usage
-```
-If you are not dumb I think you can understand
-Files
-generator = proccess.py
-solver = captcha.py
-utils = helper.py
-email = verfiy.py
-Folders
-hcaptcha = store images, text
-cloudfare = researchs
 ```
 ### Quality
 ```
@@ -43,10 +31,4 @@ cloudfare = researchs
 3. Resell Token Gen (Not A Good Choice)
 4. Spamming Service, Etc ....
 ```
-### Price
-```
-0. Source: 499 Usd
-1. Lifetime: 155 Usd
-2. Yearly:  75 Usd
-3. Monthly: 35 Usd
-```
+
